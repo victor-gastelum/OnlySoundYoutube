@@ -1,0 +1,16 @@
+# Node dependencies (si usas npm/yarn)
+node_modules/
+
+# Archivos de compilación
+dist/
+build/
+
+# Archivos temporales y de sistema
+.DS_Store
+Thumbs.db
+
+# Configuración personal
+*.log
+*.env
+.vscode/
+config.js

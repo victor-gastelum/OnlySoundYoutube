@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Offscreen Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* El iframe está oculto visualmente; el audio sigue funcionando. */
+    html, body { margin: 0; padding: 0; background: #000; }
+    #yt {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="yt" allow="autoplay" allowfullscreen></iframe>
+  <script type="module" src="./offscreen.js"></script>
+</body>
+</html>

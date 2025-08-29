@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>YouTube Audio Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./popup.css" />
+</head>
+<body>
+  <header>
+    <h1>YT Audio</h1>
+  </header>
+
+  <section id="search">
+    <form id="searchForm">
+      <input id="q" type="search" placeholder="Buscar en YouTube..." autocomplete="off" required />
+      <button type="submit">Buscar</button>
+    </form>
+    <div id="apiKeyWarning" class="hidden">
+      Debes configurar tu API Key en src/config.js (YOUTUBE_API_KEY).
+    </div>
+  </section>
+
+  <section id="results"></section>
+
+  <section id="playerControls">
+    <div id="nowPlaying">Sin reproducción</div>
+    <div class="controls">
+      <button id="btnPlayPause" disabled>Reproducir</button>
+      <input id="volume" type="range" min="0" max="100" value="80" />
+    </div>
+    <div class="secondary">
+      <button id="btnOpenYouTube">Abrir YouTube para iniciar sesión</button>
+    </div>
+  </section>
+
+  <footer>
+    <small>Usa la API oficial de YouTube. No descarga ni separa audio.</small>
+  </footer>
+
+  <script type="module" src="./popup.js"></script>
+</body>
+</html>

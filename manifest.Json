@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Only Sound Youtube (Opera GX)",
+  "version": "0.1.0",
+  "description": "Find and play only YouTube audio in the background (using the official embedded player).",
+  "action": {
+    "default_title": "Only Sound Youtube",
+    "default_popup": "src/popup.html"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "offscreen",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://www.googleapis.com/*",
+    "https://i.ytimg.com/*"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src https://www.googleapis.com/ https://i.ytimg.com/ https://www.youtube.com/; frame-src https://www.youtube.com/ https://www.youtube-nocookie.com/;"
+  }
+}
