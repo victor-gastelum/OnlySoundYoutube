@@ -8,13 +8,23 @@ const dom = {
   btnPlayPause: document.getElementById("btnPlayPause"),
   volume: document.getElementById("volume"),
   nowPlaying: document.getElementById("nowPlaying"),
-  btnOpenYouTube: document.getElementById("btnOpenYouTube")
+  btnOpenYouTube: document.getElementById("btnOpenYouTube"),
+  timeDisplay: document.getElementById("timeDisplay")
 };
 
 let playing = false;
 let current = null;
 
+let currentTime = 0;
+let duration = 0;
+
 init();
+
+setInterval(() => {
+  if (current) {
+    chrome.runtime.sendMessage({ target: "offscreen", action: "GET_TIME" });
+  }
+}, 1000);
 
 function init() {
   if (!hasApiKey()) {
@@ -26,7 +36,22 @@ function init() {
   dom.volume.addEventListener("input", onVolume);
   dom.btnOpenYouTube.addEventListener("click", openYouTubeToLogin);
 
-  chrome.runtime.onMessage.addListener(onRuntimeMessage);
+  chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  if (msg?.from !== "offscreen") return;
+  // LOG: muestra todos los mensajes recibidos
+  console.log("Popup recibió mensaje:", msg);
+  if (msg.event === "CURRENT_TIME") {
+    currentTime = msg.payload?.currentTime || 0;
+    updateTimeDisplay();
+  }
+  if (msg.event === "DURATION") {
+    duration = msg.payload?.duration || 0;
+    updateTimeDisplay();
+  }
+  if (msg.event === "PLAYER_STATE") {
+    // ... lo que ya tienes ...
+  }
+});
 
   // Request state on open
   chrome.runtime.sendMessage({ target: "background", action: "GET_STATE" });
@@ -115,6 +140,14 @@ function openYouTubeToLogin() {
 
 function onRuntimeMessage(msg) {
   if (msg?.from !== "offscreen") return;
+  if (msg.event === "CURRENT_TIME") {
+    currentTime = msg.payload?.currentTime || 0;
+    updateTimeDisplay();
+  }
+  if (msg.event === "DURATION") {
+    duration = msg.payload?.duration || 0;
+    updateTimeDisplay();
+  }
   if (msg.event === "PLAYER_STATE") {
     // Optionally sync button text based on state
     const state = msg.payload?.state;
@@ -135,4 +168,16 @@ function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
   }[c]));
+}
+
+// Formatea segundos a mm:ss
+function formatTime(sec) {
+  sec = Math.floor(sec || 0);
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function updateTimeDisplay() {
+  dom.timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
 }

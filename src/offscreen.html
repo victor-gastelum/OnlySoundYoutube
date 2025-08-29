@@ -5,16 +5,18 @@
   <title>Offscreen Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* El iframe está oculto visualmente; el audio sigue funcionando. */
     html, body { margin: 0; padding: 0; background: #000; }
     #yt {
-      width: 0;
-      height: 0;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      left: -9999px;
-      top: -9999px;
+      width: 480px;
+      height: 270px;
+      opacity: 1;
+      pointer-events: auto;
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      z-index: 999999;
+      border: 2px solid #fff;
+      background: #222;
     }
   </style>
 </head>
